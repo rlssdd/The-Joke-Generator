@@ -1,0 +1,31 @@
+import requests
+from tkinter import *
+
+window = Tk()
+window.title("The Joke Generator")
+window.geometry("700x200")
+lbl = Label(window, text="The Joke Generator")
+lbl.config(font=("Courier", 14))
+txt = Text(window, height=5, width=80)
+
+
+def get_joke():
+    txt.delete("1.0", "end")
+    response = requests.get(url="https://v2.jokeapi.dev/joke/Any")
+
+    joke_setup = response.json()["setup"]
+    joke_delivery = response.json()["delivery"]
+    txt.insert("1.0", joke_setup + "\n")
+    txt.insert("2.0", "\n")
+    txt.insert("3.0", joke_delivery + "\n")
+
+
+lbl.pack()
+txt.pack()
+
+btn1 = Button(window, text="Next", bd="5", command=get_joke)
+btn1.pack()
+btn2 = Button(window, text="Close", bd="5", command=window.destroy)
+btn2.pack()
+
+window.mainloop()
